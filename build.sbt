@@ -16,6 +16,6 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-nop" % "1.6.4"
 )
 
-enablePlugins(JavaAppPackaging)
-
+assemblyJarName in assembly := "bot.jar"
+mainClass in assembly := Some("bot.Main")
 mainClass in Compile := Some("bot.Main")

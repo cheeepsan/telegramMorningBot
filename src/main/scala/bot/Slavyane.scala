@@ -2,8 +2,9 @@ package bot
 
 import java.io.File
 
-import com.bot4s.telegram.api.Polling
+import com.bot4s.telegram.api.{Polling, RequestHandler, TelegramBot}
 import com.bot4s.telegram.api.declarative.Commands
+import com.bot4s.telegram.clients.ScalajHttpClient
 import com.bot4s.telegram.methods.SendPhoto
 import com.bot4s.telegram.models.{InputFile, Message}
 import slick.driver.H2Driver.api._
@@ -12,10 +13,11 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
 
-class Slavyane(val botToken: String, val db: Db) extends AkkaExampleBot(botToken)
+class Slavyane(val botToken: String, val db: Db) extends TelegramBot
   with Polling
   with Commands {
   val chats = TableQuery[Chats]
+  override val client: RequestHandler  = new ScalajHttpClient(botToken)
   //  val chatId: ChatId = ChatId(id)
   //  val file: InputFile = InputFile(new File("files/slav.jpg").toPath)
   //  request(SendPhoto(chatId, file ))

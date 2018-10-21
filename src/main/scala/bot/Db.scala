@@ -28,19 +28,24 @@ class Db {
   val conf: Config = ConfigFactory.parseFile(new File("conf/db.conf"))
   val db: Database = Database.forConfig("h2mem1", conf)
   //  val db = Database.forConfig("h2mem1")
-  val setup = DBIO.seq(
-    // Create the tables, including primary and foreign keys
-    chats.schema.create,
-    chats ++= Seq(
-      Chat(None, -238020854)
-//      Chat(None, -123131)
+  try {
+    val setup = DBIO.seq(
+      // Create the tables, including primary and foreign keys
+      chats.schema.create,
+      chats ++= Seq(
+        Chat(None, -238020854)
+        //      Chat(None, -123131)
+      )
+
     )
 
-  )
   // ...
   val setupFuture = db.run(setup)
   Await.result(setupFuture, Duration.Inf)
-
+  } catch {
+    case e =>
+      println("Db exists already")
+  }
 
   def getDbObject: Database = this.db
 
