@@ -1,8 +1,22 @@
-name := "slavyaneBot"
 
-version := "0.1"
+
+name := """slavyaneBot"""
+organization := "kontula"
+
+version := "1.0-SNAPSHOT"
+
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.12.7"
+
+libraryDependencies += guice
+libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
+
+// Adds additional packages into Twirl
+//TwirlKeys.templateImports += "kontula.controllers._"
+
+// Adds additional packages into conf/routes
+// play.sbt.routes.RoutesKeys.routesImport += "kontula.binders._"
 
 // Core with minimal dependencies, enough to spawn your first bot.
 libraryDependencies += "com.bot4s" %% "telegram-core" % "4.0.0-RC1"
@@ -16,6 +30,12 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-nop" % "1.6.4"
 )
 
-assemblyJarName in assembly := "bot.jar"
-mainClass in assembly := Some("bot.Main")
-mainClass in Compile := Some("bot.Main")
+enablePlugins(JavaAppPackaging)
+
+rpmRelease := "1"
+
+rpmVendor := "typesafe"
+
+rpmUrl := Some("http://github.com/sbt/sbt-native-packager")
+
+rpmLicense := Some("BSD")
